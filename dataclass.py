@@ -15,5 +15,5 @@ size = 100 * 1000
 if __name__ == "__main__":
     from timeit import timeit
 
-    print(timeit("p1 = Position(x=np.ones(size), y=np.ones(size))", globals = globals()))
+    print(timeit("p1 = Position(x=np.ones(size), y=np.ones(size))", globals=globals()))
     print(timeit("p2 = {'x': np.ones(size), 'y': np.ones(size)}", globals=globals()))
