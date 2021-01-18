@@ -8,6 +8,11 @@
 
 
 def words(aFilename):
+    """words is a function that constructs a generator.
+    Calling words does not begin executing the generator;
+    that is done by using it in an iteration context, or
+    by calling next(x) on the returned object 'x'.
+    """
     punctuation = ".,:;'\""
     with open(aFilename) as my_file:
         for line in my_file:
