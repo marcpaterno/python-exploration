@@ -34,10 +34,23 @@ dummy::Finalize()
   THE_THING = nullptr;
 }
 
+void
+dummy::Increment()
+{
+  THE_THING->increment();
+}
+
+int
+dummy::GetCount()
+{
+  return THE_THING->get_count();
+}
+
 PYBIND11_MODULE(dummy_util, m)
 {
   m.doc() = R"pbdoc(demo of lifetime management)pbdoc";
-  m.def(
-    "initialize", &dummy::Initialize, R"pbdoc(initialize the library)pbdoc");
-  m.def("finalize", &dummy::Finalize, R"pbdoc(finalize the library)pbdoc");
+  m.def("initialize", &dummy::Initialize, R"pbdoc(initialize the thing)pbdoc");
+  m.def("finalize", &dummy::Finalize, R"pbdoc(finalize the thing)pbdoc");
+  m.def("increment", &dummy::Increment, "increment the counter");
+  m.def("get_count", &dummy::GetCount, "get the count");
 }

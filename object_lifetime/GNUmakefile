@@ -15,3 +15,4 @@ dummy_util.cpython-311-darwin.so: dummy_util.cc
 
 format:
 	clang-format -i -style=file *.cc *.hh
+	black *.py

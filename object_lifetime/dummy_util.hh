@@ -13,6 +13,8 @@ namespace dummy {
 
   void Initialize();
   void Finalize();
+  void Increment();
+  int GetCount();
 }
 
 #endif
