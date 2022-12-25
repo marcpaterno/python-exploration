@@ -1,0 +1,123 @@
+---
+title: Notes on functional programming with Python
+author: Marc Paterno
+date: today
+jupyter: python3
+number-sections: true
+format:
+  html:
+    theme: united
+---
+
+## Introduction
+
+The Python standard library contains some limited support for functional programming.
+There are several additional libraries available for functional programming.
+This is a record of my exploration of some of the available facilities.
+
+## 3rd party packages
+
+This document demonstrates parts of:
+
+* cytoolz
+* funcy
+
+The package `fn.py` has not been updated in several years and does not support the latest versions of Python.
+For this reason it is not included here.
+
+## The Python Standard Library
+
+### Higher-order functions
+
+The PSL contains several higher-order functions in the `builtins` package and which are therefore always available.
+
+* filter
+* map
+* partial
+* reduce
+
+
+## Partial function application and currying
+
+Partial function application means binding some, but not all, of a function's arguments to create a new function.
+
+### Python Standard Library
+
+In the PSL the function `functools.partial` provides this facility:
+
+```{python}
+#| cache: true
+from functools import partial
+
+def add(x, y):
+    return x + y
+
+add_1 = partial(add, 1)
+
+%timeit add_1(10)
+```
+
+Currying is a technique for translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions each of which takes one argument.
+Currying is often used to provide partial function application.
+
+In the Haskell language, all functions are curried.
+In Python, currying requires additional work.
+
+### cytoolz {#sec-cytoolz-curry}
+
+* `from cytoolz import curry`
+
+This provides a decorator `@curry` as well as the function `curry`:
+
+```
+def mul(x, y):
+    return x * y
+mul = curry(mul)
+
+# Or equivalently
+@curry
+def mul(x,y):
+    return x * y
+```
+
+Using a curried function looks like:
+
+```
+triple = mul(3)
+triple(2) # returns 6
+```
+
+### funcy
+
+* `from funcy import curry`
+
+This provides a decorator `@curry` as well as the function `curry`.
+The use is like `cytoolz.curry` (@sec-cytoolz-curry).
+
+### Comparison
+
+At least for very simple cases, it appears that currying with `funcy` is faster than with `cytoolz`.
+
+```{python}
+from funcy import curry
+
+@curry
+def add(x, y):
+    return x + y
+
+add_1 = add(1)
+%timeit add_1(10)
+```
+
+
+```{python}
+from cytoolz import curry
+
+@curry
+def add(x, y):
+    return x + y
+
+add_1 = add(1)
+%timeit add_1(10)
+```
+
