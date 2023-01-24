@@ -3,10 +3,15 @@ title: Notes on functional programming with Python
 author: Marc Paterno
 date: today
 jupyter: python3
+execute:
+  cache: true
 number-sections: true
+toc: true
 format:
   html:
     theme: united
+  pdf:
+    shift-heading-level-by: -1
 ---
 
 ## Introduction
@@ -23,7 +28,7 @@ This document demonstrates parts of:
 * funcy
 
 The package `fn.py` has not been updated in several years and does not support the latest versions of Python.
-For this reason it is not included here.
+For this reason, it is not included here.
 
 ## The Python Standard Library
 
@@ -40,13 +45,37 @@ The PSL contains several higher-order functions in the `builtins` package and wh
 ## Partial function application and currying
 
 Partial function application means binding some, but not all, of a function's arguments to create a new function.
+The new function might take any number of arguments.
+
+Currying is a technique for translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions *each* of which takes one argument.
+Currying is often used to provide partial function application.
+
+In the Haskell language, all functions are curried.
+In Python, currying requires additional work.
+An important convenience provided by a curried function is that one can call it with any number of arguments less than the total number of arguments, and the result is a function like what would be returned by `partial`, but with slightly less complication at the call site.
+
+
+To compare the speed for partially-applied functions to the "normal" call we will use a simple addition function:
+
+```{python}
+def add(x, y):
+    return x + y
+
+%timeit add(1, 10)
+```
+
+We we shall see, the use of partial function evaluation will cost a bit of runtime speed.
+The advantage of partial function evaluation is the greater expressiveness in the code.
+The samples used here are quite simple; they do show the advantage of the expressiveness of code that partial evaluation can provide.
+They also show a worst-case demonstration of the cost of the technique (because the function being partially applied is almost the most trivial function possible).
+
+
 
 ### Python Standard Library
 
 In the PSL the function `functools.partial` provides this facility:
 
 ```{python}
-#| cache: true
 from functools import partial
 
 def add(x, y):
@@ -57,11 +86,8 @@ add_1 = partial(add, 1)
 %timeit add_1(10)
 ```
 
-Currying is a technique for translating the evaluation of a function that takes multiple arguments into evaluating a sequence of functions each of which takes one argument.
-Currying is often used to provide partial function application.
-
-In the Haskell language, all functions are curried.
-In Python, currying requires additional work.
+The PSL does not provide any facility to curry a function.
+Any binding of arguments must be done using `partial`.
 
 ### cytoolz {#sec-cytoolz-curry}
 
@@ -98,6 +124,7 @@ The use is like `cytoolz.curry` (@sec-cytoolz-curry).
 
 At least for very simple cases, it appears that currying with `funcy` is faster than with `cytoolz`.
 
+
 ```{python}
 from funcy import curry
 
@@ -109,6 +136,14 @@ add_1 = add(1)
 %timeit add_1(10)
 ```
 
+`cytoolz.partial` is the same object as `functools.partial`:
+
+```{python}
+import functools
+import cytoolz
+
+cytoolz.partial is functools.partial
+```
 
 ```{python}
 from cytoolz import curry

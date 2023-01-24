@@ -17,7 +17,7 @@ clean:
 	rm -f notes.md *.bak* indent.log *.fls notes.pdf *.pdf.tmp *.fdb_latexmk *.tex notes.html
 
 .qmd.pdf:
-	quarto render $< --to pdf
+	quarto render $< --to pdf --cache
 
 .qmd.html:
-	quarto render $< --to html
+	quarto render $< --to html --cache
