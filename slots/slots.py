@@ -56,7 +56,11 @@ class BadDerived(Base):
 
 
 class BadLateAssignment(Base):
-    """You can't create an instance of this class because of the late assignment."""
+    """This is a class that demonstrate the effect of 'bad' late assignment.
+    Calling the method `some_function` will raise an `AttributeError` because
+    it tries to create a new attribute in a class that has slots and not a
+    __dict__ member.
+    """
 
     def __init__(self):
         """Initialize only the base, no new instance variables."""

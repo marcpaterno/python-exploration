@@ -16,6 +16,7 @@ def test_bad():
 
 def test_late():
     x = BadLateAssignment()
+    assert isinstance(x, BadLateAssignment)
     assert x.basevar == 4
     with pytest.raises(AttributeError):
         x.some_function()
