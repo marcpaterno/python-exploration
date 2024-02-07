@@ -10,10 +10,12 @@ class Position:
     y: np.ndarray
 
 
-size = 100 * 1000
+size = 1 * 1000
 
 if __name__ == "__main__":
     from timeit import timeit
 
+    print(f"Time for creating {size} dataclass objects:")
     print(timeit("p1 = Position(x=np.ones(size), y=np.ones(size))", globals=globals()))
+    print(f"Time for creating {size} dictionary objects:")
     print(timeit("p2 = {'x': np.ones(size), 'y': np.ones(size)}", globals=globals()))
